@@ -1,0 +1,68 @@
+Y-Combinator
+
+Material:
+- simple y-combinator in Clojure: https://gist.github.com/3223392
+- another, better one in Clojure: https://gist.github.com/3225440
+
+Y-Combinator is a specific fixed-point combinator
+
+fixed-point combinator
+- a function which computes fixed point for other functions
+
+fixed-point
+- f(x) = x^2 -> x=0 and x=1 are fixed-points
+
+let's say you want a list of all the elements in block of HTML
+f(some-html) -> set of child elements
+f(set-of-child-elements) -> set of child and grandchild elements
+...
+f(f(f(f(some-html)))) -> set of all descendant elements
+
+a fixed-point combinator would apply f() until you get the final result
+
+>>>BEGIN: ASIDE <<<<
+f(x) = x for any x -> Identity function
+f(f(x)) = f(x) -> Idempotent
+
+So, a fixed-point combinator is a function g() where:
+- g(f) = p, where f(p) = p
+>>>END: ASIDE <<<<
+
+Why all the fuss about recursion?
+What if you wanted to define a recursive function where it is not allowed by the language?
+(lambda calculus, strict functional lang.)
+"To understand recursion, you must understand recursion."
+
+In simple terms, let's say you have the factorial function.  And you define it like this:
+
+(defn simple-factorial
+  "A simple, naive implementation of the factorial function."
+  [n]
+  (if (= n 0)
+    1
+    (* n (simple-factorial (dec n)))))
+;; (simple-factorial 5) => 120
+
+
+>>>BEGIN: Break for Clojure basics? <<<<
+
+
+>>>END: Break for Clojure Basics? <<<<
+
+You can see that "simple-factorial" is called from within its own definition.
+How might we remove this recursive definition?
+To answer this question is to find the fixpoint combinator for factorial.
+We will find the Y-Combinator.
+
+factorial() = Y(almost-factorial())
+
+(defn almost-factorial
+  [f]
+  (fn [n]
+    (if (= n 0)
+      1
+      (* n (f (dec n))))))
+
+How about removing the recusive definition by accepting a function as an argument?
+
+
